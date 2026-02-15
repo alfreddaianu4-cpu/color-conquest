@@ -54,25 +54,37 @@ socket.on("gameStart",()=>{
   document.getElementById("lobby").style.display="none";
 });
 
+// 🏆 FIXED WINNER SCREEN
 socket.on("gameEnd",(winner)=>{
 
   let winnerName = winner?.name || "Nobody";
 
   const screen=document.createElement("div");
+
   screen.style.position="absolute";
   screen.style.top="50%";
   screen.style.left="50%";
   screen.style.transform="translate(-50%,-50%)";
   screen.style.background="white";
-  screen.style.padding="40px";
-  screen.style.fontSize="30px";
-  screen.style.border="5px solid black";
+  screen.style.padding="40px 60px";
+  screen.style.fontSize="36px";
+  screen.style.border="6px solid black";
+  screen.style.borderRadius="20px";
+  screen.style.boxShadow="0 0 40px rgba(0,0,0,0.4)";
+  screen.style.color="black";
+  screen.style.textAlign="center";
+  screen.style.fontFamily="Arial";
 
-  screen.innerText = winnerName + " WINS 👑";
+  screen.innerHTML = `
+    🏆 WINNER 🏆 <br><br>
+    <span style="color:${winner?.color}; font-weight:bold;">
+      ${winnerName}
+    </span>
+  `;
 
   document.body.appendChild(screen);
 
-  setTimeout(()=>location.reload(),4000);
+  setTimeout(()=>location.reload(),5000);
 });
 
 socket.on("colorTaken",()=>{
@@ -125,7 +137,7 @@ function updateLobbyUI(){
   });
 }
 
-// ===== DRAW =====
+// ===== DRAW MAP =====
 
 function drawMap(){
   for(let y=0;y<ROWS;y++){
@@ -135,6 +147,8 @@ function drawMap(){
     }
   }
 }
+
+// ===== DRAW PLAYERS =====
 
 function drawPlayers(){
   Object.entries(players).forEach(([id,p])=>{
@@ -150,6 +164,8 @@ function drawPlayers(){
     ctx.fillText(p.name,v.x+10,v.y-5);
   });
 }
+
+// ===== SCORES =====
 
 function drawScores(){
   let scores={};
@@ -179,6 +195,8 @@ function drawScores(){
   });
 }
 
+// ===== LOBBY TIMER =====
+
 function drawLobbyTimer(){
 
   if(gameStarted) return;
@@ -195,6 +213,8 @@ function drawLobbyTimer(){
     50
   );
 }
+
+// ===== MAIN DRAW =====
 
 function draw(){
 
@@ -216,6 +236,8 @@ function draw(){
   ctx.textAlign="left";
   ctx.fillText("Time: "+gameTime,20,30);
 }
+
+// ===== LOOP =====
 
 function loop(){
   draw();
