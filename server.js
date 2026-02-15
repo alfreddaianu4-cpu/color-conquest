@@ -88,6 +88,13 @@ function endGame(){
 
   let winner = Object.values(players).find(p=>p.color===winnerColor);
 
+// send full clean winner data
+io.emit("gameEnd", winner ? {
+  name: winner.name,
+  color: winner.color
+} : null);
+
+
   io.emit("gameEnd",winner);
 
   gameTime=120;
