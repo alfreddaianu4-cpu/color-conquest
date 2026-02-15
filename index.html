@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Color Conquest</title>
+
+<style>
+body {
+  background: linear-gradient(270deg, #1e1e2f, #2c2c54, #1e1e2f);
+  background-size: 600% 600%;
+  animation: bgMove 15s ease infinite;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  margin: 0;
+  overflow: hidden;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#lobby {
+  background: rgba(42,42,64,0.85);
+  padding: 20px;
+  width: 320px;
+  margin: 20px auto;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+canvas {
+  border: 4px solid gold;
+  background: #f4f4f4;
+  margin-top: 10px;
+}
+
+/* floating blocks */
+.block {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  opacity: 0.15;
+  border-radius: 12px;
+  animation: float 6s infinite ease-in-out;
+}
+
+.b1 { background:red; top:10%; left:5%; }
+.b2 { background:blue; top:40%; right:8%; }
+.b3 { background:green; bottom:20%; left:15%; }
+.b4 { background:purple; bottom:10%; right:20%; }
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+/* easter eggs */
+.egg {
+  position:absolute;
+  opacity:0.35;
+  font-size:14px;
+}
+
+.egg1 { top:5%; right:5%; }
+.egg2 { bottom:5%; left:5%; }
+.egg3 { top:60%; right:3%; }
+.egg4 { bottom:25%; left:40%; }
+.egg5 { top:75%; left:75%; font-size:10px; }
+
+</style>
+</head>
+
+<body>
+
+<h1>🎨 Color Conquest 🎨</h1>
+
+<div id="lobby">
+  <h2>Join the chaos</h2>
+
+  <input id="nameInput" placeholder="Your Name">
+
+  <select id="colorSelect">
+    <option value="">Choose Color</option>
+    <option value="green">🟩</option>
+    <option value="red">🟥</option>
+    <option value="blue">🟦</option>
+    <option value="yellow">🟨</option>
+    <option value="purple">🟪</option>
+    <option value="orange">🟧</option>
+  </select>
+
+  <br><br>
+
+  <button onclick="joinGame()">Join</button>
+
+  <h3>Players:</h3>
+  <ul id="playerList"></ul>
+
+  <button onclick="toggleReady()">Ready</button>
+  <button onclick="startGame()">Start</button>
+</div>
+
+<canvas id="game" width="1000" height="650"></canvas>
+
+<!-- floating blocks -->
+<div class="block b1"></div>
+<div class="block b2"></div>
+<div class="block b3"></div>
+<div class="block b4"></div>
+
+<!-- easter eggs -->
+<div class="egg egg1">SEFU TUTUROR</div>
+<div class="egg egg2">OANA FARAOANA</div>
+<div class="egg egg3">ADOPTATUL</div>
+<div class="egg egg4">Edi is also here</div>
+<div class="egg egg5">Just ali</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="script.js"></script>
+
+
+</body>
+</html>
