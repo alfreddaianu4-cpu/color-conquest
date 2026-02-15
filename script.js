@@ -54,7 +54,7 @@ socket.on("gameStart",()=>{
   document.getElementById("lobby").style.display="none";
 });
 
-// 🏆 FIXED WINNER SCREEN
+// 🏆 WINNER SCREEN
 socket.on("gameEnd",(winner)=>{
 
   let winnerName = winner?.name || "Nobody";
@@ -137,6 +137,34 @@ function updateLobbyUI(){
   });
 }
 
+// ===== SCOREBOARD OUTSIDE GAME =====
+
+function updateScoreboard(){
+
+  let scores={};
+
+  for(let y=0;y<ROWS;y++){
+    for(let x=0;x<COLS;x++){
+      const c=map[y]?.[x];
+      if(c && c!=="grey"){
+        scores[c]=(scores[c]||0)+1;
+      }
+    }
+  }
+
+  const board=document.getElementById("scoreboard");
+  if(!board) return;
+
+  board.innerHTML="<b>Score</b><br>";
+
+  Object.values(players).forEach(p=>{
+    const div=document.createElement("div");
+    div.style.color=p.color;
+    div.innerText = p.name + ": " + (scores[p.color]||0);
+    board.appendChild(div);
+  });
+}
+
 // ===== DRAW MAP =====
 
 function drawMap(){
@@ -162,36 +190,6 @@ function drawPlayers(){
     ctx.font="14px Arial";
     ctx.textAlign="center";
     ctx.fillText(p.name,v.x+10,v.y-5);
-  });
-}
-
-// ===== SCORES =====
-
-function drawScores(){
-  let scores={};
-
-  for(let y=0;y<ROWS;y++){
-    for(let x=0;x<COLS;x++){
-      const c=map[y]?.[x];
-      if(c && c!=="grey"){
-        scores[c]=(scores[c]||0)+1;
-      }
-    }
-  }
-
-  ctx.textAlign="right";
-  ctx.font="16px Arial";
-
-  let i=0;
-
-  Object.values(players).forEach(p=>{
-    ctx.fillStyle=p.color;
-    ctx.fillText(
-      p.name+": "+(scores[p.color]||0),
-      980,
-      30+i*20
-    );
-    i++;
   });
 }
 
@@ -222,6 +220,7 @@ function draw(){
 
   if(!gameStarted){
     drawLobbyTimer();
+    updateScoreboard();
     return;
   }
 
@@ -229,7 +228,7 @@ function draw(){
 
   drawMap();
   drawPlayers();
-  drawScores();
+  updateScoreboard();
 
   ctx.fillStyle="black";
   ctx.font="20px Arial";
